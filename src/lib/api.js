@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import { LANGUAGE_VERSIONS } from "./constants";
 

@@ -1,9 +1,11 @@
-import Image from "next/image";
+// app/page.tsx
+import CodeEditor from "@/components/CodeEditor";
+
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">Hii</h1>
+    <main className="container mx-auto p-4">
+      <CodeEditor />
     </main>
   );
 }
