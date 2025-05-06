@@ -19,6 +19,7 @@ const CodeEditor: React.FC = () => {
   const [language, setLanguage] = useState<SupportedLanguage>("javascript");
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isSpinning, setIsSpinning] = useState(false);
   
   useEffect(() => {
     setMounted(true);
@@ -71,14 +72,23 @@ const CodeEditor: React.FC = () => {
     return extensions[lang] || "txt";
   };
 
+  const toggleTheme = () => {
+    setIsSpinning(true);
+    setTheme(theme === "dark" ? "light" : "dark");
+
+    setTimeout(() => {
+      setIsSpinning(false);
+    }, 1000);
+  };
+
   if (!mounted) {
     return null; 
   }
 
   return (
-    <Card className="w-full">
+    <Card className="w-full h-screen">
       <CardHeader className="pb-3 flex flex-row items-center justify-between">
-        <h2 className="text-lg font-medium">Code IDE</h2>
+        <h2 className="text-xl font-medium">Code Editor</h2>
         <div className="flex items-center space-x-2">
           <TooltipProvider>
             <Tooltip>
@@ -86,12 +96,18 @@ const CodeEditor: React.FC = () => {
                 <Button
                   variant="outline"
                   size="icon"
-                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  onClick={toggleTheme}
                 >
                   {theme === "dark" ? (
-                    <Sun className="h-4 w-4" />
+                    <Sun 
+                      className={`h-4 w-4 ${isSpinning ? "animate-spin" : ""}`} 
+                      color="#FFD700" 
+                    />
                   ) : (
-                    <Moon className="h-4 w-4" />
+                    <Moon 
+                      className={`h-4 w-4 ${isSpinning ? "animate-spin" : ""}`}
+                      color="#4169E1"  
+                    />
                   )}
                   <span className="sr-only">Toggle theme</span>
                 </Button>
@@ -158,7 +174,7 @@ const CodeEditor: React.FC = () => {
                     horizontal: "auto",
                   },
                 }}
-                height="60vh"
+                height="70vh"
                 theme={theme === "dark" ? "vs-dark" : "light"}
                 language={language}
                 defaultValue={CODE_SNIPPETS[language]}
@@ -174,7 +190,7 @@ const CodeEditor: React.FC = () => {
             <div className="mb-2">
               <h3 className="text-sm font-medium">Output</h3>
             </div>
-            <div className="border rounded-md overflow-hidden h-[60vh]">
+            <div className="border rounded-md overflow-hidden h-[70vh]">
               <Output editorRef={editorRef} language={language} />
             </div>
           </div>

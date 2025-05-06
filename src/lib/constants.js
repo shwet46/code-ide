@@ -1,22 +1,18 @@
 export const CODE_SNIPPETS = {
-  javascript: `// JavaScript Example
-console.log("Hello, world!");`,
-  typescript: `// TypeScript Example
-function greet(name: string): string {
+  javascript: `console.log("Hello, world!");`,
+  typescript: `function greet(name: string): string {
   return \`Hello, \${name}!\`;
 }
 console.log(greet("TypeScript"));`,
   python: `# Python Example
     
 print("Hello, world!")`,
-  java: `// Java Example
-public class Main {
+  java: `public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, world!");
     }
 }`,
-  csharp: `// C# Example
-using System;
+  csharp: `using System;
 
 class Program {
     static void Main() {
