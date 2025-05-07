@@ -2,7 +2,7 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { CODE_SNIPPETS, LANGUAGE_VERSIONS } from "../lib/constants";
+import { CODE_SNIPPETS} from "../lib/constants";
 import LanguageSelector from "./LanguageSelector";
 import Output from "../components/Output";
 import { useTheme } from "next-themes";
@@ -86,8 +86,8 @@ const CodeEditor: React.FC = () => {
   }
 
   return (
-    <Card className="w-full h-screen">
-      <CardHeader className="pb-3 flex flex-row items-center justify-between">
+    <Card className="w-full h-screen overflow-y-auto">
+      <CardHeader className="pb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
         <h2 className="text-xl font-medium">Code Editor</h2>
         <div className="flex items-center space-x-2">
           <TooltipProvider>
@@ -174,7 +174,7 @@ const CodeEditor: React.FC = () => {
                     horizontal: "auto",
                   },
                 }}
-                height="70vh"
+                height="40vh sm:50vh md:60vh lg:70vh"
                 theme={theme === "dark" ? "vs-dark" : "light"}
                 language={language}
                 defaultValue={CODE_SNIPPETS[language]}
@@ -190,7 +190,7 @@ const CodeEditor: React.FC = () => {
             <div className="mb-2">
               <h3 className="text-sm font-medium">Output</h3>
             </div>
-            <div className="border rounded-md overflow-hidden h-[70vh]">
+            <div className="border rounded-md overflow-hidden h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]">
               <Output editorRef={editorRef} language={language} />
             </div>
           </div>
