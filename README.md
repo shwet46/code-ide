@@ -49,33 +49,6 @@ This is a code editor made using Next.js with Piston API for code execution.
 
 5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
 
-## Project Structure
-
-```
-code-ide/
-├── pages/                
-├── public/               
-├── src/                  # Source code
-│   └── app/              # Next.js App Router
-│       ├── favicon.ico   # Favicon
-│       ├── globals.css   # Global styles
-│       ├── layout.tsx    # Root layout
-│       └── page.tsx      # Main page
-│   └── components/       # Reusable UI components
-│       ├── ui/           # Shadcn UI components
-│       ├── CodeEditor.tsx      # Monaco editor component
-│       ├── LanguageSelector.tsx # Language selection component
-│       ├── Output.tsx     # Code execution output component
-│       └── theme-provider.tsx  # Theme provider for dark/light mode
-│   └── lib/              # Utility functions and hooks
-│       ├── api.js        # API client for Piston
-│       ├── constants.js  # Constants used throughout the app
-│       └── utils.ts      # Helper utilities
-├── .gitignore            
-├── components.json       
-└── eslint.config.mjs   
-```
-
 ## Usage
 
 ### Basic Usage
