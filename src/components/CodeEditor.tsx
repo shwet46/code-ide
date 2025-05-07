@@ -2,29 +2,35 @@
 
 import React, { useRef, useState, useEffect } from "react";
 import { Editor, OnMount } from "@monaco-editor/react";
-import { CODE_SNIPPETS} from "../lib/constants";
+import { CODE_SNIPPETS } from "../lib/constants";
 import LanguageSelector from "./LanguageSelector";
 import Output from "../components/Output";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Copy, Download, Moon, Sun } from "lucide-react";
+import * as monaco from "monaco-editor";
 
 type SupportedLanguage = keyof typeof CODE_SNIPPETS;
 
 const CodeEditor: React.FC = () => {
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
   const [value, setValue] = useState<string>("");
   const [language, setLanguage] = useState<SupportedLanguage>("javascript");
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [isSpinning, setIsSpinning] = useState(false);
-  
+  const [mounted, setMounted] = useState<boolean>(false);
+  const [isSpinning, setIsSpinning] = useState<boolean>(false);
+
   useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   useEffect(() => {
     setValue(CODE_SNIPPETS[language]);
   }, [language]);
@@ -67,46 +73,37 @@ const CodeEditor: React.FC = () => {
       python: "py",
       java: "java",
       csharp: "cs",
-    } as Record<SupportedLanguage, string>;
-    
+    };
     return extensions[lang] || "txt";
   };
 
   const toggleTheme = () => {
     setIsSpinning(true);
     setTheme(theme === "dark" ? "light" : "dark");
-
-    setTimeout(() => {
-      setIsSpinning(false);
-    }, 1000);
+    setTimeout(() => setIsSpinning(false), 1000);
   };
 
-  if (!mounted) {
-    return null; 
-  }
+  if (!mounted) return null;
 
   return (
-    <Card className="w-full h-screen overflow-y-auto">
-      <CardHeader className="pb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0">
-        <h2 className="text-xl font-medium">Code Editor</h2>
+    <Card className="w-full h-screen overflow-y-auto px-2 py-2 sm:px-4 sm:py-4">
+      <CardHeader className="pb-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
+        <h2 className="text-2xl font-medium">Code Editor</h2>
         <div className="flex items-center space-x-2">
+          {/* Theme Toggle */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={toggleTheme}
-                >
+                <Button variant="outline" size="icon" onClick={toggleTheme}>
                   {theme === "dark" ? (
-                    <Sun 
-                      className={`h-4 w-4 ${isSpinning ? "animate-spin" : ""}`} 
-                      color="#FFD700" 
+                    <Sun
+                      className={`h-4 w-4 ${isSpinning ? "animate-spin" : ""}`}
+                      color="#FFD700"
                     />
                   ) : (
-                    <Moon 
+                    <Moon
                       className={`h-4 w-4 ${isSpinning ? "animate-spin" : ""}`}
-                      color="#4169E1"  
+                      color="#4169E1"
                     />
                   )}
                   <span className="sr-only">Toggle theme</span>
@@ -115,15 +112,12 @@ const CodeEditor: React.FC = () => {
               <TooltipContent>Toggle theme</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          
+
+          {/* Copy Code */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={copyCode}
-                >
+                <Button variant="outline" size="icon" onClick={copyCode}>
                   <Copy className="h-4 w-4" />
                   <span className="sr-only">Copy code</span>
                 </Button>
@@ -131,15 +125,12 @@ const CodeEditor: React.FC = () => {
               <TooltipContent>Copy code</TooltipContent>
             </Tooltip>
           </TooltipProvider>
-          
+
+          {/* Download Code */}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  variant="outline"
-                  size="icon"
-                  onClick={downloadCode}
-                >
+                <Button variant="outline" size="icon" onClick={downloadCode}>
                   <Download className="h-4 w-4" />
                   <span className="sr-only">Download code</span>
                 </Button>
@@ -149,14 +140,15 @@ const CodeEditor: React.FC = () => {
           </TooltipProvider>
         </div>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         <div className="w-full">
           <LanguageSelector language={language} onSelect={onSelect} />
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+        <div className="flex flex-col lg:flex-row gap-4">
           {/* Editor Section */}
-          <div className="w-full">
+          <div className="w-full lg:w-1/2">
             <div className="mb-2">
               <h3 className="text-sm font-medium">Editor</h3>
             </div>
@@ -174,7 +166,7 @@ const CodeEditor: React.FC = () => {
                     horizontal: "auto",
                   },
                 }}
-                height="40vh sm:50vh md:60vh lg:70vh"
+                height="70vh"
                 theme={theme === "dark" ? "vs-dark" : "light"}
                 language={language}
                 defaultValue={CODE_SNIPPETS[language]}
@@ -184,13 +176,13 @@ const CodeEditor: React.FC = () => {
               />
             </div>
           </div>
-          
+
           {/* Output Section */}
-          <div className="w-full">
+          <div className="w-full lg:w-1/2">
             <div className="mb-2">
               <h3 className="text-sm font-medium">Output</h3>
             </div>
-            <div className="border rounded-md overflow-hidden h-[40vh] sm:h-[50vh] md:h-[60vh] lg:h-[70vh]">
+            <div className="border rounded-md overflow-hidden h-[70vh]">
               <Output editorRef={editorRef} language={language} />
             </div>
           </div>
