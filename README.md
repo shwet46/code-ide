@@ -29,8 +29,8 @@ This is a code editor made using Next.js with Piston API for code execution.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/code-craft.git
-   cd code-craft
+   git clone https://github.com/yourusername/code-ide.git
+   cd code-ide
    ```
 
 2. Install dependencies:
